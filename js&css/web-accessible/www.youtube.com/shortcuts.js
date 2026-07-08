@@ -169,7 +169,7 @@ ImprovedTube.shortcutsListeners = {
 		ImprovedTube.input.pressed.shift = false;
 	},
 	/*-----------------------------------------------------------------------------
-	4.7.0T TOUCH INPUT - Double-tap seek
+	TOUCH INPUT - Double-tap seek
 	-----------------------------------------------------------------------------*/
 	touchend: function (event) {
 		const mode = ImprovedTube.storage.player_double_tap_seek_mode;
@@ -776,7 +776,7 @@ ImprovedTube.shortcutSmartSpeed = function () {
 
 
 /*-----------------------------------------------------------------------------
-4.7.34 DOUBLE-TAP SEEK
+DOUBLE-TAP SEEK
 -----------------------------------------------------------------------------*/
 ImprovedTube.doubleTapSeek = function (direction, tapCount) {
 	const player = this.elements.player;
