@@ -178,6 +178,9 @@ ImprovedTube.shortcutsListeners = {
 		if (!player) return;
 		const path = event.composedPath ? event.composedPath() : [];
 		if (!path.includes(player) && !(ImprovedTube.elements.video && path.includes(ImprovedTube.elements.video))) return;
+		// Don't intercept taps on player controls (play/pause, fullscreen, settings, etc.)
+		const target = event.target;
+		if (target && target.closest && target.closest('.ytp-chrome-bottom, .ytp-chrome-top, .ytp-settings-menu, .ytp-popup, .ytp-button, button, a')) return;
 		const touch = event.changedTouches[0];
 		if (!touch) return;
 		const rect = player.getBoundingClientRect();
