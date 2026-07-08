@@ -1,8 +1,10 @@
 {
-  "dontShortenTitles": { 	"message": "Full Video Titles (don't shorten)" },
-	 "preferredDubbingLanguage": {
-		"message": "Preferred dubbing language"
-	},
+  "dontShortenTitles": {
+    "message": "Full Video Titles (don't shorten)"
+  },
+  "preferredDubbingLanguage": {
+    "message": "Preferred dubbing language"
+  },
   "hideSuggestedAction": {
     "message": "Hide Suggested Action 'View products'"
   },
@@ -1506,8 +1508,8 @@
   "thumbnails": {
     "message": "Thumbnails"
   },
-  "thumbnailGrayscale":{
-    "message":"Thumbnail Grayscale"
+  "thumbnailGrayscale": {
+    "message": "Thumbnail Grayscale"
   },
   "thumbnailSize": {
     "message": "Thumbnail Size"
@@ -1708,6 +1710,33 @@
     "message": "Channel Whitelisted for Smart Speed!"
   },
   "autoVideoRecovery": {
-  "message": "Auto video recovery"
+    "message": "Auto video recovery"
+  },
+  "doubleTapSeek": {
+    "message": "Double-tap seek"
+  },
+  "mode": {
+    "message": "Mode"
+  },
+  "defaultBehavior": {
+    "message": "Default (YouTube native)"
+  },
+  "fixedDistance": {
+    "message": "Fixed distance"
+  },
+  "progressiveDistance": {
+    "message": "Progressive distance"
+  },
+  "seekDistance": {
+    "message": "Seek distance (seconds)"
+  },
+  "doubleTapDistance": {
+    "message": "Double-tap distance (seconds)"
+  },
+  "tripleTapDistance": {
+    "message": "Triple-tap distance (seconds)"
+  },
+  "quadrupleTapDistance": {
+    "message": "Quadruple-tap distance (seconds)"
   }
 }
