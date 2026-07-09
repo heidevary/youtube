@@ -1,6 +1,4 @@
-/**
- * Tests for double-tap seek feature
- */
+// double-tap seek tests
 
 global.ImprovedTube = {
     storage: {},
@@ -10,15 +8,18 @@ global.ImprovedTube = {
     doubleTapSeek: null
 };
 
-const shortcutsCode = require('fs').readFileSync(
-    require('path').join(__dirname, '../../js&css/web-accessible/www.youtube.com/shortcuts.js'),
+const fs = require('fs');
+const path = require('path');
+const vm = require('vm');
+
+// Extract doubleTapSeek from shortcuts.js (it's not exported as a module)
+const shortcutsCode = fs.readFileSync(
+    path.join(__dirname, '../../js&css/web-accessible/www.youtube.com/shortcuts.js'),
     'utf-8'
 );
-
-const match = shortcutsCode.match(/ImprovedTube\.doubleTapSeek\s*=\s*function[\s\S]*?\n};/);
-if (match) {
-    eval(match[0]);
-}
+const fnMatch = shortcutsCode.match(/ImprovedTube\.doubleTapSeek\s*=\s*function[\s\S]*?\n};/);
+if (!fnMatch) throw new Error('doubleTapSeek not found in shortcuts.js');
+vm.runInThisContext(fnMatch[0]);
 
 describe('Double-tap seek', () => {
     let mockPlayer;
@@ -35,7 +36,7 @@ describe('Double-tap seek', () => {
         ImprovedTube.showStatus.mockClear();
     });
 
-    test('should seek by fixed distance in fixed mode', () => {
+    test('fixed mode seeks by configured distance', () => {
         ImprovedTube.storage.player_double_tap_seek_mode = 'fixed';
         ImprovedTube.storage.player_double_tap_seek_fixed_distance = 5;
         ImprovedTube.doubleTapSeek(1, 2);
@@ -43,7 +44,7 @@ describe('Double-tap seek', () => {
         expect(mockPlayer.classList.add).toHaveBeenCalledWith('ytp-seek-forward-bump');
     });
 
-    test('should seek backward correctly', () => {
+    test('backward seek clamps and adds correct class', () => {
         ImprovedTube.storage.player_double_tap_seek_mode = 'fixed';
         ImprovedTube.storage.player_double_tap_seek_fixed_distance = 5;
         ImprovedTube.doubleTapSeek(-1, 2);
@@ -51,7 +52,7 @@ describe('Double-tap seek', () => {
         expect(mockPlayer.classList.add).toHaveBeenCalledWith('ytp-seek-backward-bump');
     });
 
-    test('should use progressive distances', () => {
+    test('progressive mode uses escalating distances', () => {
         ImprovedTube.storage.player_double_tap_seek_mode = 'progressive';
         ImprovedTube.storage.player_double_tap_seek_distance_2 = 10;
         ImprovedTube.storage.player_double_tap_seek_distance_3 = 30;
@@ -66,13 +67,13 @@ describe('Double-tap seek', () => {
         expect(mockPlayer.seekTo).toHaveBeenCalledWith(160, true);
     });
 
-    test('should not seek when mode is default', () => {
+    test('default mode is a no-op', () => {
         ImprovedTube.storage.player_double_tap_seek_mode = 'default';
         ImprovedTube.doubleTapSeek(1, 2);
         expect(mockPlayer.seekTo).not.toHaveBeenCalled();
     });
 
-    test('should not seek below 0', () => {
+    test('clamps to 0 when seeking before start', () => {
         ImprovedTube.storage.player_double_tap_seek_mode = 'fixed';
         ImprovedTube.storage.player_double_tap_seek_fixed_distance = 200;
         mockPlayer.getCurrentTime.mockReturnValue(50);
@@ -80,7 +81,7 @@ describe('Double-tap seek', () => {
         expect(mockPlayer.seekTo).toHaveBeenCalledWith(0, true);
     });
 
-    test('should not seek beyond duration', () => {
+    test('clamps to duration when seeking past end', () => {
         ImprovedTube.storage.player_double_tap_seek_mode = 'fixed';
         ImprovedTube.storage.player_double_tap_seek_fixed_distance = 200;
         mockPlayer.getCurrentTime.mockReturnValue(250);
@@ -88,7 +89,7 @@ describe('Double-tap seek', () => {
         expect(mockPlayer.seekTo).toHaveBeenCalledWith(300, true);
     });
 
-    test('should toggle ytp-seek visual classes', () => {
+    test('toggles ytp-seek visual feedback classes', () => {
         ImprovedTube.storage.player_double_tap_seek_mode = 'fixed';
         ImprovedTube.storage.player_double_tap_seek_fixed_distance = 10;
         ImprovedTube.doubleTapSeek(1, 2);
